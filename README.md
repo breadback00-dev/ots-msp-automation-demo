@@ -33,6 +33,14 @@ You can also open `index.html` directly in a browser.
 5. Show the ranked opportunities and 30-day pilot plan.
 6. Use **Copy** or **Download** to show export-ready output.
 
+## Demo Readiness Checks
+
+- `npm test` should pass before recording or sharing.
+- Desktop check: default handover mode should show the review banner, mode-aware stats, and structured handover sections.
+- Automation check: loading the automation sample should show ranked opportunity cards with impact, first step, Microsoft fit, confidence, and effort.
+- Mobile check: the header, mode controls, sample buttons, and note textarea should fit without horizontal clipping.
+- Generated QA screenshots are ignored by git via `qa-*.png`.
+
 ## Outreach Positioning
 
 Do not pitch this as a replacement for Office Tech Suite's ticketing, documentation, PSA, SharePoint, Hudu, IT Glue, or Microsoft tooling.
@@ -53,6 +61,8 @@ The honest angle is strongest:
 - `src/generator.js` - reusable pack generation logic.
 - `tests/generator.test.js` - smoke tests for the generator.
 - `docs/00-project-brief.md` - project context.
+- `docs/08-feature-brief.md` - product scope and success criteria.
+- `docs/09-technical-plan.md` - implementation approach and verification plan.
 
 ## Safety Notes
 

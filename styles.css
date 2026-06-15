@@ -57,6 +57,10 @@ textarea:focus-visible {
   border-bottom: 1px solid var(--line);
 }
 
+.topbar > div {
+  min-width: 0;
+}
+
 .eyebrow {
   margin: 0 0 0.35rem;
   color: var(--accent);
@@ -64,6 +68,7 @@ textarea:focus-visible {
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
 
 h1,
@@ -156,9 +161,11 @@ h3 {
 
 .mode-button {
   min-height: 2.45rem;
+  padding: 0.35rem 0.55rem;
   background: transparent;
   color: var(--muted);
   font-weight: 800;
+  white-space: normal;
 }
 
 .mode-button.active {
@@ -174,6 +181,14 @@ h3 {
   color: var(--muted);
   font-size: 0.82rem;
   font-weight: 800;
+}
+
+.mode-description {
+  min-height: 2.4rem;
+  margin: -0.35rem 0 0.8rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
 }
 
 textarea {
@@ -251,6 +266,39 @@ textarea {
 .output-actions {
   display: flex;
   gap: 0.4rem;
+}
+
+.review-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.75rem 0.85rem;
+  margin-bottom: 0.7rem;
+  border: 1px solid #f0d69b;
+  border-radius: var(--radius);
+  background: var(--warning-soft);
+  color: #4a3512;
+  line-height: 1.4;
+}
+
+.review-banner strong {
+  white-space: nowrap;
+}
+
+.export-status {
+  min-height: 1.2rem;
+  margin: 0 0 0.6rem;
+  color: var(--muted);
+  font-size: 0.83rem;
+  font-weight: 800;
+}
+
+.export-status[data-tone="success"] {
+  color: var(--accent);
+}
+
+.export-status[data-tone="error"] {
+  color: var(--danger);
 }
 
 .summary-stats {
@@ -335,9 +383,69 @@ textarea {
   color: var(--danger);
 }
 
-.missing-list li::marker,
-.opportunity-list li::marker {
+.missing-list li::marker {
   color: var(--warning);
+}
+
+.opportunity-list {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.opportunity-card {
+  padding: 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fbfcfa;
+}
+
+.opportunity-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.opportunity-card-header span {
+  flex: 0 0 auto;
+  padding: 0.22rem 0.45rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.opportunity-card p {
+  margin: 0 0 0.55rem;
+  color: var(--muted);
+}
+
+.opportunity-card dl {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.opportunity-card dl div {
+  display: grid;
+  grid-template-columns: 6.2rem 1fr;
+  gap: 0.55rem;
+}
+
+.opportunity-card dt {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.opportunity-card dd {
+  margin: 0;
 }
 
 .email-block,
@@ -417,6 +525,10 @@ textarea {
     grid-template-columns: 1fr;
   }
 
+  .mode-switch {
+    grid-template-columns: 1fr;
+  }
+
   .action-row,
   .panel-heading {
     align-items: stretch;
@@ -429,5 +541,13 @@ textarea {
 
   .output-actions .ghost-button {
     flex: 1;
+  }
+
+  .review-banner,
+  .opportunity-card-header,
+  .opportunity-card dl div {
+    align-items: flex-start;
+    grid-template-columns: 1fr;
+    flex-direction: column;
   }
 }

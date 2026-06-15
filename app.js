@@ -10,9 +10,15 @@
   const clearNotes = document.querySelector("#clearNotes");
   const copyMarkdown = document.querySelector("#copyMarkdown");
   const downloadMarkdown = document.querySelector("#downloadMarkdown");
+  const modeDescription = document.querySelector("#modeDescription");
+  const exportStatus = document.querySelector("#exportStatus");
 
   let activeMode = "handover";
   let currentPack = null;
+  const modeDescriptions = {
+    handover: "Turn raw project notes into a reviewed handover pack, runbook, and client update.",
+    automation: "Turn process notes into ranked automation opportunities, workshop questions, and a 30-day pilot."
+  };
 
   function setMode(mode) {
     activeMode = mode;
@@ -21,15 +27,19 @@
       button.classList.toggle("active", isActive);
       button.setAttribute("aria-selected", String(isActive));
     });
+    modeDescription.textContent = modeDescriptions[mode];
     generate();
   }
 
-  function renderStats(stats) {
+  function renderStats(pack) {
+    const { stats } = pack;
     const statsConfig = [
       ["Systems", stats.systems],
       ["Risks", stats.risks],
-      ["Missing", stats.missing],
-      ["Opportunities", stats.opportunities]
+      ["Missing info", stats.missing],
+      pack.mode === "automation"
+        ? ["Opportunities", stats.opportunities]
+        : ["Sections", pack.sections.length]
     ];
 
     summaryStats.innerHTML = statsConfig
@@ -53,9 +63,27 @@
       return `<article class="output-section">${title}<p>${escapeHtml(section.content)}</p></article>`;
     }
 
+    if (section.type === "opportunities") {
+      const items = section.items.map((item) => `
+        <li class="opportunity-card">
+          <div class="opportunity-card-header">
+            <strong>${item.rank}. ${escapeHtml(item.title)}</strong>
+            <span>${escapeHtml(item.confidence)} confidence</span>
+          </div>
+          <p>${escapeHtml(item.impact)}</p>
+          <dl>
+            <div><dt>First step</dt><dd>${escapeHtml(item.firstStep)}</dd></div>
+            <div><dt>Microsoft fit</dt><dd>${escapeHtml(item.microsoftFit)}</dd></div>
+            <div><dt>Effort</dt><dd>${escapeHtml(item.effort)}</dd></div>
+          </dl>
+        </li>
+      `).join("");
+      return `<article class="output-section">${title}<ol class="opportunity-list">${items}</ol></article>`;
+    }
+
     const listClass = section.type === "risk-list"
       ? "risk-list"
-      : section.type === "missing-list" || section.type === "opportunities"
+      : section.type === "missing-list"
         ? "missing-list"
         : "";
 
@@ -65,7 +93,7 @@
 
   function generate() {
     currentPack = generatePack(notesInput.value, activeMode);
-    renderStats(currentPack.stats);
+    renderStats(currentPack);
     output.innerHTML = currentPack.sections.map(sectionMarkup).join("");
   }
 
@@ -83,11 +111,16 @@
       generate();
     }
 
-    await navigator.clipboard.writeText(toMarkdown(currentPack));
-    copyMarkdown.textContent = "Copied";
-    window.setTimeout(() => {
-      copyMarkdown.textContent = "Copy";
-    }, 1200);
+    try {
+      await navigator.clipboard.writeText(toMarkdown(currentPack));
+      setExportStatus("Copied Markdown to clipboard.", "success");
+      copyMarkdown.textContent = "Copied";
+      window.setTimeout(() => {
+        copyMarkdown.textContent = "Copy";
+      }, 1200);
+    } catch (error) {
+      setExportStatus("Copy blocked by the browser. Use Download instead.", "error");
+    }
   }
 
   function downloadCurrentMarkdown() {
@@ -104,6 +137,12 @@
     link.click();
     link.remove();
     URL.revokeObjectURL(url);
+    setExportStatus(`Downloaded ${link.download}.`, "success");
+  }
+
+  function setExportStatus(message, tone) {
+    exportStatus.textContent = message;
+    exportStatus.dataset.tone = tone;
   }
 
   modeButtons.forEach((button) => {

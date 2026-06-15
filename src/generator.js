@@ -293,7 +293,7 @@ Office Tech Suite`
           title: "Ranked opportunities",
           tag: "Pilot",
           type: "opportunities",
-          items: opportunities.map((opportunity) => `${opportunity.rank}. ${opportunity.title} - ${opportunity.impact} First step: ${opportunity.firstStep} Microsoft fit: ${opportunity.microsoftFit}.`)
+          items: opportunities
         },
         {
           title: "Workshop questions",
@@ -371,7 +371,18 @@ The first pilot should focus on one repeatable workflow, use tools you already h
       if (section.type === "block" || section.type === "paragraph") {
         lines.push(section.content, "");
       } else {
-        section.items.forEach((item) => lines.push(`- ${item}`));
+        section.items.forEach((item) => {
+          if (section.type === "opportunities") {
+            lines.push(`- ${item.rank}. ${item.title}`);
+            lines.push(`  - Impact: ${item.impact}`);
+            lines.push(`  - First step: ${item.firstStep}`);
+            lines.push(`  - Microsoft fit: ${item.microsoftFit}`);
+            lines.push(`  - Effort: ${item.effort}`);
+            lines.push(`  - Confidence: ${item.confidence}`);
+          } else {
+            lines.push(`- ${item}`);
+          }
+        });
         lines.push("");
       }
     });
