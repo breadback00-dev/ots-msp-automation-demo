@@ -1,0 +1,10 @@
+{
+  "name": "ots-msp-automation-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Static prototype for an MSP handover and automation opportunity mapper tailored to Office Tech Suite outreach.",
+  "scripts": {
+    "start": "python -m http.server 5173",
+    "test": "node tests/generator.test.js"
+  }
+}

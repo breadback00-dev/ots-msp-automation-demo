@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MSP Ops Assistant | OTS Demo</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Tailored prototype for Office Tech Suite</p>
+        <h1>MSP Ops Assistant</h1>
+      </div>
+      <div class="trust-strip" aria-label="Prototype safeguards">
+        <span>No client data</span>
+        <span>Human review</span>
+        <span>Export-ready</span>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="input-panel" aria-labelledby="input-title">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Raw intake</p>
+            <h2 id="input-title">Paste messy ticket, call, or project notes</h2>
+          </div>
+          <button class="ghost-button" id="clearNotes" type="button">Clear</button>
+        </div>
+
+        <div class="mode-switch" role="tablist" aria-label="Output mode">
+          <button class="mode-button active" type="button" data-mode="handover" role="tab" aria-selected="true">
+            Handover pack
+          </button>
+          <button class="mode-button" type="button" data-mode="automation" role="tab" aria-selected="false">
+            Automation mapper
+          </button>
+        </div>
+
+        <label class="notes-label" for="notesInput">Client/project notes</label>
+        <textarea id="notesInput" spellcheck="true"></textarea>
+
+        <div class="sample-grid" aria-label="Demo note examples">
+          <button class="sample-button" type="button" data-sample="handover">
+            Load M365 handover sample
+          </button>
+          <button class="sample-button" type="button" data-sample="automation">
+            Load automation workshop sample
+          </button>
+          <button class="sample-button" type="button" data-sample="cyber">
+            Load cyber readiness sample
+          </button>
+        </div>
+
+        <div class="action-row">
+          <button class="primary-button" id="generateBtn" type="button">Generate pack</button>
+          <p class="hint">Local demo logic only. No notes are sent anywhere.</p>
+        </div>
+      </section>
+
+      <section class="output-panel" aria-labelledby="output-title">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Structured output</p>
+            <h2 id="output-title">Ready for engineer review</h2>
+          </div>
+          <div class="output-actions">
+            <button class="ghost-button" id="copyMarkdown" type="button">Copy</button>
+            <button class="ghost-button" id="downloadMarkdown" type="button">Download</button>
+          </div>
+        </div>
+
+        <div id="summaryStats" class="summary-stats" aria-live="polite"></div>
+        <div id="output" class="output-stack" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <section class="positioning" aria-labelledby="positioning-title">
+      <div>
+        <p class="eyebrow">Outreach angle</p>
+        <h2 id="positioning-title">Not a replacement for OTS tools. A workflow layer on top.</h2>
+      </div>
+      <p>
+        This prototype is designed to show how AI-assisted internal tooling could standardise
+        handovers, surface missing information, and find small automation wins while preserving
+        Office Tech Suite's human, governance-aware delivery style.
+      </p>
+    </section>
+
+    <script src="src/generator.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
