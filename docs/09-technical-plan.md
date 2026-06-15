@@ -2,10 +2,10 @@
 
 ## Objective
 
-Build a credible local prototype that demonstrates two Office Tech Suite-relevant internal workflows:
+Build a credible local prototype that leads with one Office Tech Suite-relevant internal workflow and keeps a second as a follow-on proof point:
 
-1. Turning messy MSP notes into a client documentation and handover pack.
-2. Turning process/workshop notes into an automation opportunity map.
+1. Primary: turning messy managed service provider notes into a client documentation and handover pack.
+2. Secondary: turning process/workshop notes into an automation opportunity map.
 
 The implementation should be simple enough to inspect and safe enough to demo with dummy data, while leaving a clear path to a future LLM-backed version if the outreach gets interest.
 
@@ -67,7 +67,7 @@ Cons:
 
 Use **Option A: Static HTML/CSS/JS Prototype** for the first outreach version.
 
-This is the lightest safe approach. It buys speed, inspectability, and privacy. It avoids framework overhead while still demonstrating the core value: transforming messy notes into structured, reviewable MSP outputs.
+This is the lightest safe approach. It buys speed, inspectability, and privacy. It avoids framework overhead while still demonstrating the core value: transforming messy notes into structured, reviewable managed service provider handover outputs.
 
 Move to React/Vite only if the scope expands to include real AI calls, persistence, user accounts, complex editing, or integrations.
 
@@ -78,7 +78,7 @@ Move to React/Vite only if the scope expands to include real AI calls, persisten
    - Does it open directly into the tool?
    - Are the two modes clearly different?
    - Does it avoid real-client-data claims?
-   - Does the copy sound like internal MSP tooling rather than generic SaaS?
+   - Does the copy sound like internal managed service provider tooling rather than generic SaaS?
 3. Keep or revise the static app structure:
    - `index.html` for semantic app shell.
    - `styles.css` for responsive operations-console UI.
@@ -102,9 +102,11 @@ Move to React/Vite only if the scope expands to include real AI calls, persisten
    - 30-day pilot plan.
    - Risks and safeguards.
    - Client-facing plain-English positioning.
+   - Keep it framed as an optional follow-on, not the primary outreach ask.
 6. Add export behavior:
    - Copy Markdown.
    - Download Markdown.
+   - Include a concise review reminder in every export.
 7. Add sample data:
    - Microsoft 365/onboarding handover.
    - Automation workshop.
@@ -114,12 +116,13 @@ Move to React/Vite only if the scope expands to include real AI calls, persisten
    - `npm test`.
    - Local browser check at `http://localhost:5173`.
    - Manual check for responsive layout and demo flow.
-10. Update README with run commands, demo flow, and pitch guidance.
+10. Update README with run commands, handover-first demo flow, and pitch guidance.
+11. Add `docs/10-outreach-pack.md` with the exact pilot ask, demo script, boundaries, and proof assets.
 
 ## Test Strategy
 
 - Unit:
-  - Test system detection, risk detection, automation opportunity detection, empty input behavior, and Markdown export.
+  - Test system detection, risk detection, missing-information detection, automation opportunity ranking, empty input behavior, and Markdown export safety preamble.
 - Integration:
   - For this static prototype, browser-level interaction is the integration check.
 - Manual/browser:
@@ -136,13 +139,22 @@ Move to React/Vite only if the scope expands to include real AI calls, persisten
 ## Risks
 
 - **Looks like a generic AI wrapper.**
-  Mitigation: use MSP-specific outputs, Office Tech Suite-relevant sample notes, and restrained operations UI.
+  Mitigation: use managed service provider-specific outputs, Office Tech Suite-relevant sample notes, and restrained operations UI.
 
 - **Overclaims technical accuracy.**
   Mitigation: keep human-review language and missing-info sections visible.
 
 - **Raises client-data concerns.**
   Mitigation: local-only demo, dummy data, no API calls, no storage.
+
+- **Exported Markdown loses safety context.**
+  Mitigation: prepend every export with a concise reminder to review facts, assumptions, and signoff.
+
+- **Two-mode demo dilutes the first wedge.**
+  Mitigation: lead with handover/documentation in the UI, README, and outreach pack; show automation only as a secondary proof point.
+
+- **Future live-AI version introduces client-data risk.**
+  Mitigation: require approved provider, data-retention terms, access controls, redaction, logging, and explicit OTS approval before real client data is processed.
 
 - **Build gets over-engineered.**
   Mitigation: static first version; no framework until integration or complexity requires it.

@@ -16,8 +16,8 @@
   let activeMode = "handover";
   let currentPack = null;
   const modeDescriptions = {
-    handover: "Turn raw project notes into a reviewed handover pack, runbook, and client update.",
-    automation: "Turn process notes into ranked automation opportunities, workshop questions, and a 30-day pilot."
+    handover: "Turn raw project notes into a handover pack, runbook, checklist, and internal client-update draft.",
+    automation: "Turn process notes into automation opportunities, workshop questions, and a 30-day pilot."
   };
 
   function setMode(mode) {
@@ -28,6 +28,7 @@
       button.setAttribute("aria-selected", String(isActive));
     });
     modeDescription.textContent = modeDescriptions[mode];
+    generateBtn.textContent = mode === "automation" ? "Generate opportunity map" : "Generate handover pack";
     generate();
   }
 
@@ -146,7 +147,29 @@
   }
 
   modeButtons.forEach((button) => {
-    button.addEventListener("click", () => setMode(button.dataset.mode));
+    button.addEventListener("click", () => {
+      const nextMode = button.dataset.mode;
+      let loadedMatchingSample = false;
+      if (nextMode === "automation" && notesInput.value === SAMPLE_NOTES.handover) {
+        notesInput.value = SAMPLE_NOTES.automation;
+        loadedMatchingSample = true;
+      }
+      if (nextMode === "handover" && notesInput.value === SAMPLE_NOTES.automation) {
+        notesInput.value = SAMPLE_NOTES.handover;
+        loadedMatchingSample = true;
+      }
+      setMode(nextMode);
+      setExportStatus(
+        loadedMatchingSample
+          ? nextMode === "automation"
+            ? "Loaded the automation sample."
+            : "Loaded the handover sample."
+          : nextMode === "automation"
+            ? "Switched to automation mapper."
+            : "Switched to handover pack.",
+        "success"
+      );
+    });
   });
 
   sampleButtons.forEach((button) => {

@@ -7,7 +7,7 @@
     ["SharePoint", /\bsharepoint\b/i],
     ["Teams", /\bteams\b/i],
     ["Power BI", /\bpower bi|powerbi\b/i],
-    ["Power Automate", /\bpower automate|flow\b/i],
+    ["Power Automate", /\b(power automate|microsoft flow)\b/i],
     ["VoIP / Cloud PBX", /\bvoip|cloud pbx|phone system|telephony\b/i],
     ["Wi-Fi / Connectivity", /\bwi[- ]?fi|wifi|starlink|broadband|connectivity|network\b/i],
     ["Backups", /\bbackup|recovery|disaster recovery|restore\b/i],
@@ -60,6 +60,7 @@
     {
       title: "Client onboarding workflow",
       pattern: /\bonboarding|new client|welcome pack|collect forms|first check|new starter|joiner/i,
+      signals: [/\bonboarding\b/i, /\bnew client\b/i, /\bnew starter\b/i, /\bjoiner\b/i, /\bforms?\b/i],
       impact: "Reduces repeated chasing and makes first-contact steps consistent.",
       firstStep: "Turn the existing onboarding checklist into a staged form, task list, and welcome email sequence.",
       microsoftFit: "Forms, SharePoint, Teams, Planner, Power Automate"
@@ -67,6 +68,7 @@
     {
       title: "Leaver and access removal checklist",
       pattern: /\boffboarding|leaver|access removal|disable account|licen[cs]e|entra|groups/i,
+      signals: [/\boffboarding\b/i, /\bleaver\b/i, /\baccess removal\b/i, /\bdisable account\b/i, /\bentra\b/i],
       impact: "Reduces access-control risk and creates a reviewable trail.",
       firstStep: "Generate a leaver request intake, approval step, account action checklist, and completion note.",
       microsoftFit: "Entra ID, Microsoft 365 admin, Teams approvals"
@@ -74,6 +76,7 @@
     {
       title: "Weekly reporting pack",
       pattern: /\bweekly report|manual report|power bi|visibility|dashboard|spreadsheet|kpi|reporting/i,
+      signals: [/\bweekly report\b/i, /\bmanual report\b/i, /\bpower bi\b/i, /\bdashboard\b/i, /\bkpi\b/i],
       impact: "Turns recurring reporting into a repeatable client update instead of a manual task.",
       firstStep: "Define the report fields, data owner, frequency, and client-facing summary template.",
       microsoftFit: "Power BI, Excel, SharePoint, Power Automate"
@@ -81,6 +84,7 @@
     {
       title: "Approval routing",
       pattern: /\bapproval|sign[- ]?off|expense|quote|purchase|authorise|chasing/i,
+      signals: [/\bapproval\b/i, /\bsign[- ]?off\b/i, /\bquote\b/i, /\bpurchase\b/i, /\bchasing\b/i],
       impact: "Keeps decisions moving and makes stalled approvals visible.",
       firstStep: "Map the requester, approver, fallback approver, SLA, and final record location.",
       microsoftFit: "Teams approvals, Power Automate, SharePoint lists"
@@ -88,6 +92,7 @@
     {
       title: "File naming and document filing",
       pattern: /\bfile naming|folder|lost|document|sharepoint|naming convention|saving rules/i,
+      signals: [/\bfile naming\b/i, /\bfolder\b/i, /\blost\b/i, /\bdocument\b/i, /\bsharepoint\b/i],
       impact: "Prevents project documents from disappearing into ad hoc folders.",
       firstStep: "Create one naming rule, one metadata rule, and one save-location rule for the chosen workflow.",
       microsoftFit: "SharePoint, OneDrive, Teams"
@@ -95,6 +100,7 @@
     {
       title: "Support handover summariser",
       pattern: /\bticket|handover|support|engineer notes|client update|runbook|kb|knowledge base/i,
+      signals: [/\bticket\b/i, /\bhandover\b/i, /\bsupport\b/i, /\bengineer notes\b/i, /\brunbook\b/i],
       impact: "Converts messy notes into reusable internal and client-facing records.",
       firstStep: "Standardise the handover fields: issue, systems, actions taken, risks, missing info, next owner.",
       microsoftFit: "PSA export, SharePoint, Teams, internal docs"
@@ -152,7 +158,15 @@ Firewall ownership is unknown, backup coverage is not documented, and there is n
   }
 
   function detectOpportunities(notes) {
-    const matched = AUTOMATION_RULES.filter((rule) => rule.pattern.test(notes));
+    const matched = AUTOMATION_RULES
+      .map((rule, index) => ({
+        rule,
+        score: scoreOpportunity(rule, notes),
+        index
+      }))
+      .filter((candidate) => candidate.score > 0)
+      .sort((a, b) => b.score - a.score || a.index - b.index)
+      .map((candidate) => candidate.rule);
     const fallback = AUTOMATION_RULES.find((rule) => rule.title === "Support handover summariser");
     return (matched.length ? matched : [fallback]).map((rule, index) => ({
       rank: index + 1,
@@ -163,6 +177,19 @@ Firewall ownership is unknown, backup coverage is not documented, and there is n
       effort: index === 0 ? "Low to medium" : "Medium",
       confidence: index === 0 ? "High" : "Medium"
     }));
+  }
+
+  function scoreOpportunity(rule, notes) {
+    if (!rule.pattern.test(notes)) {
+      return 0;
+    }
+
+    const signalCount = rule.signals.filter((pattern) => pattern.test(notes)).length;
+    const manualPain = /\b(manual|chasing|copy|spreadsheet|rekey|duplicate|every week|weekly)\b/i.test(notes) ? 1 : 0;
+    const microsoftFit = /\b(microsoft 365|m365|teams|sharepoint|forms|planner|power automate|power bi|excel|entra)\b/i.test(notes) ? 1 : 0;
+    const lowDisruption = /\b(pilot|small|without disrupting|low[- ]?risk|human review)\b/i.test(notes) ? 1 : 0;
+
+    return 1 + signalCount + manualPain + microsoftFit + lowDisruption;
   }
 
   function countSignals(notes) {
@@ -237,7 +264,7 @@ Firewall ownership is unknown, backup coverage is not documented, and there is n
 5. Handover: assign owner, due date, evidence link, and review point.`
         },
         {
-          title: "Client-friendly next steps email",
+          title: "Internal client-update draft",
           tag: "Client",
           type: "block",
           className: "email-block",
@@ -248,7 +275,7 @@ Thanks for sharing the initial details. We have summarised the main points and i
 The immediate priorities are to validate account protection, confirm backup coverage, clarify mailbox ownership, and agree the next steps for onboarding/offboarding. Once those details are confirmed, we can provide a cleaner action plan with owners and timescales.
 
 Best,
-Office Tech Suite`
+[approved OTS sign-off]`
         },
         {
           title: "Internal handover notes",
@@ -364,7 +391,14 @@ The first pilot should focus on one repeatable workflow, use tools you already h
   }
 
   function toMarkdown(pack) {
-    const lines = [`# ${pack.title}`, ""];
+    const lines = [
+      "# Handover pack export",
+      "",
+      "Generated from the handover pack assistant. Review facts, assumptions, and signoff before using this as client-facing copy.",
+      "",
+      `# ${pack.title}`,
+      ""
+    ];
 
     pack.sections.forEach((section) => {
       lines.push(`## ${section.title}`, "");

@@ -3,21 +3,40 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MSP Ops Assistant | OTS Demo</title>
+    <title>Managed Service Provider Handover Pack Assistant</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <header class="topbar">
       <div>
-        <p class="eyebrow">Outreach demo for Office Tech Suite</p>
-        <h1>MSP Ops Assistant</h1>
-      </div>
-      <div class="trust-strip" aria-label="Prototype safeguards">
-        <span>No client data</span>
-        <span>Human review</span>
-        <span>Export-ready</span>
+        <p class="eyebrow">Service documentation workspace</p>
+        <h1>Managed Service Provider Handover Pack Assistant</h1>
       </div>
     </header>
+
+    <section class="intro-panels" aria-label="How to use and platform benefits">
+      <article class="intro-panel" aria-labelledby="how-to-title">
+        <p class="eyebrow">How to use</p>
+        <h2 id="how-to-title">Turn rough notes into a handover pack</h2>
+        <ol>
+          <li>Load a sample or paste ticket, call, or project notes.</li>
+          <li>Select the output you need: Handover pack or Automation mapper.</li>
+          <li>Review the risks, missing information, checklist, and draft update.</li>
+          <li>Copy or download the Markdown when the structure is useful.</li>
+        </ol>
+      </article>
+
+      <article class="intro-panel" aria-labelledby="benefits-title">
+        <p class="eyebrow">Platform benefits</p>
+        <h2 id="benefits-title">Cleaner documentation from everyday delivery notes</h2>
+        <ul>
+          <li>Standardises handovers before they reach the client.</li>
+          <li>Highlights missing information and assumptions early.</li>
+          <li>Creates reviewable runbooks, checklists, and client-update drafts.</li>
+          <li>Surfaces small automation opportunities from repeated manual work.</li>
+        </ul>
+      </article>
+    </section>
 
     <main class="workspace">
       <section class="input-panel" aria-labelledby="input-title">
@@ -39,7 +58,7 @@
         </div>
 
         <p class="mode-description" id="modeDescription">
-          Turn raw project notes into a reviewed handover pack, runbook, and client update.
+          Turn raw project notes into a handover pack, runbook, checklist, and internal client-update draft.
         </p>
 
         <label class="notes-label" for="notesInput">Client/project notes</label>
@@ -58,8 +77,8 @@
         </div>
 
         <div class="action-row">
-          <button class="primary-button" id="generateBtn" type="button">Generate pack</button>
-          <p class="hint">Local demo logic only. No notes are sent anywhere.</p>
+          <button class="primary-button" id="generateBtn" type="button">Generate handover pack</button>
+          <p class="hint">Use a sample or paste rough notes to generate a structured first draft.</p>
         </div>
       </section>
 
@@ -76,27 +95,15 @@
         </div>
 
         <div class="review-banner" role="note">
-          <strong>Draft only.</strong>
-          <span>Engineer review required before client use. Use dummy data in this prototype.</span>
+          <strong>Review before sharing.</strong>
+          <span>Check the risks, assumptions, and missing information before turning this into client-facing copy.</span>
         </div>
 
         <p class="export-status" id="exportStatus" aria-live="polite"></p>
-        <div id="summaryStats" class="summary-stats" aria-live="polite"></div>
-        <div id="output" class="output-stack" aria-live="polite"></div>
+        <div id="summaryStats" class="summary-stats"></div>
+        <div id="output" class="output-stack"></div>
       </section>
     </main>
-
-    <section class="positioning" aria-labelledby="positioning-title">
-      <div>
-        <p class="eyebrow">Outreach angle</p>
-        <h2 id="positioning-title">Not a replacement for OTS tools. A workflow layer on top.</h2>
-      </div>
-      <p>
-        This prototype is designed to show how AI-assisted internal tooling could standardise
-        handovers, surface missing information, and find small automation wins while preserving
-        Office Tech Suite's human, governance-aware delivery style.
-      </p>
-    </section>
 
     <script src="src/generator.js"></script>
     <script src="app.js"></script>

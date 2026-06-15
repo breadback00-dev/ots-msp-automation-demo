@@ -2,7 +2,7 @@
 
 ## Problem
 
-MSP engineers and delivery teams often create useful information in messy places: ticket notes, call summaries, project handovers, onboarding emails, spreadsheets, and Teams messages. Turning those raw notes into client-safe updates, internal handovers, runbooks, and automation discovery outputs takes time and varies by person.
+Managed service provider engineers and delivery teams often create useful information in messy places: ticket notes, call summaries, project handovers, onboarding emails, spreadsheets, and Teams messages. Turning those raw notes into client-safe updates, internal handovers, runbooks, and automation discovery outputs takes time and varies by person.
 
 For Office Tech Suite outreach, the problem is sharper: the demo must show practical value without pretending to replace their existing systems or overselling the builder as an IT engineer.
 
@@ -10,7 +10,7 @@ For Office Tech Suite outreach, the problem is sharper: the demo must show pract
 
 Primary user:
 
-- An MSP engineer, project coordinator, or service-transition lead who needs to convert messy notes into structured outputs for review.
+- A managed service provider engineer, project coordinator, or service-transition lead who needs to convert messy notes into structured outputs for review.
 
 Secondary user:
 
@@ -33,10 +33,10 @@ This means the issue is not absence of tools. It is the friction between raw not
 
 The prototype should make it easier to:
 
-- Convert raw MSP notes into a structured handover pack.
+- Convert raw managed service provider notes into a structured handover pack.
 - Identify risks and missing information before client-facing communication.
 - Generate a first-pass runbook, engineer checklist, client update, and internal handover.
-- Map messy process notes into ranked automation opportunities.
+- Optionally map messy process notes into ranked automation opportunities after the handover wedge has been shown.
 - Show that the workflow can sit on top of existing tools rather than replace them.
 
 ## Scope
@@ -46,8 +46,8 @@ In:
 - Static local web app.
 - Direct first-screen tool experience.
 - Two output modes:
-  - Handover pack.
-  - Automation opportunity mapper.
+  - Handover pack as the primary outreach demo.
+  - Automation opportunity mapper as a secondary proof point.
 - Three sample note sets:
   - Microsoft 365 / onboarding handover.
   - Automation workshop.
@@ -55,6 +55,7 @@ In:
 - Deterministic prototype logic that behaves like a credible demo without using real AI.
 - Copy/download output in Markdown.
 - Clear safety language: dummy data, no notes sent, human review required.
+- A linked outreach pack that states the one-pilot ask, boundaries, and proof assets.
 
 Out:
 
@@ -70,15 +71,16 @@ Out:
 ## Success Criteria
 
 - The default loaded state already demonstrates a useful handover pack.
-- Switching to automation mode produces a materially different output, not just renamed sections.
-- The automation mapper recommends a realistic first pilot and explains why.
+- Switching to automation mode produces a materially different output, not just renamed sections, but the first outreach does not depend on showing it.
+- The automation mapper recommends a realistic first pilot and explains why when used as a follow-on proof point.
 - The output highlights missing information and assumptions rather than inventing certainty.
 - The demo can be shown in roughly two minutes.
 - The pitch remains honest: "prototype workflow layer," not "finished production tool."
+- The first call-to-action is a 20-minute conversation about one documentation/service-transition pilot.
 
 ## Open Questions
 
-- Should the outreach demo lead with the handover pack, the automation mapper, or show both equally?
-- Should the prototype name mention Office Tech Suite directly, or stay generic as "MSP Ops Assistant" to avoid looking like an impersonation?
+- Resolved: the outreach demo should lead with the handover pack. The automation mapper stays available as an optional secondary proof point.
+- Resolved: the prototype should use a generic product name and avoid heavy disclaimer copy in the main interface.
 - Should the next version use a real AI API, or is a deterministic demo better until OTS shows interest?
 - Should the follow-up artifact be a one-page PDF, a Loom video, or both?
