@@ -20,7 +20,10 @@ const automationPack = generatePack(SAMPLE_NOTES.automation, "automation");
 assert.equal(automationPack.mode, "automation");
 assert.equal(automationPack.title, "Automation opportunity map");
 assert.ok(detectOpportunities(SAMPLE_NOTES.automation).some((opportunity) => opportunity.title === "Client onboarding workflow"));
+assert.equal(automationPack.sections.find((section) => section.title === "Ranked opportunities").type, "opportunities");
+assert.equal(typeof automationPack.sections.find((section) => section.title === "Ranked opportunities").items[0], "object");
 assert.ok(toMarkdown(automationPack).includes("## Ranked opportunities"));
+assert.ok(toMarkdown(automationPack).includes("Microsoft fit:"));
 
 const emptyPack = generatePack("", "handover");
 assert.equal(emptyPack.title, "No notes yet");

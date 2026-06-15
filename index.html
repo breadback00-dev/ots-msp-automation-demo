@@ -9,7 +9,7 @@
   <body>
     <header class="topbar">
       <div>
-        <p class="eyebrow">Tailored prototype for Office Tech Suite</p>
+        <p class="eyebrow">Outreach demo for Office Tech Suite</p>
         <h1>MSP Ops Assistant</h1>
       </div>
       <div class="trust-strip" aria-label="Prototype safeguards">
@@ -37,6 +37,10 @@
             Automation mapper
           </button>
         </div>
+
+        <p class="mode-description" id="modeDescription">
+          Turn raw project notes into a reviewed handover pack, runbook, and client update.
+        </p>
 
         <label class="notes-label" for="notesInput">Client/project notes</label>
         <textarea id="notesInput" spellcheck="true"></textarea>
@@ -71,6 +75,12 @@
           </div>
         </div>
 
+        <div class="review-banner" role="note">
+          <strong>Draft only.</strong>
+          <span>Engineer review required before client use. Use dummy data in this prototype.</span>
+        </div>
+
+        <p class="export-status" id="exportStatus" aria-live="polite"></p>
         <div id="summaryStats" class="summary-stats" aria-live="polite"></div>
         <div id="output" class="output-stack" aria-live="polite"></div>
       </section>
