@@ -4,3 +4,4 @@ Thumbs.db
 *.log
 artifacts-ui-check.png
 qa-*.png
+.vercel
